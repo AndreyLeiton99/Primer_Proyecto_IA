@@ -1,5 +1,7 @@
 from ReadCSV import cargar_laberinto, imprimir_laberinto
 from Dijkstra import Dijkstra
+from Bellman import Bellman
+# from memory_profiler import profile
 
 def menu():
     print("\n\n     ≫ Primer proyecto IA ≪\n\n")
@@ -12,6 +14,8 @@ def menu():
             
         case "2":
             print("Elegiste la opcion 2, Bellman\n")
+            
+            
         case "3":
             print("Elegiste la opcion 3, DFS\n")
         case "4":
@@ -36,7 +40,8 @@ def cargaCSV(nombre_archivo, algoritmo):
             dijkstra = Dijkstra(laberinto, inicio, meta)
             dijkstra.resolver_laberinto_ejemplo()
         case "2":
-            print("Este es el de Bellman")
+            print("hi")
+            
         case _:
             print("Incorrecto!")
             
