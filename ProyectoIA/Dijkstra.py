@@ -1,5 +1,7 @@
 import heapq
 import time
+from memory_profiler import profile
+import subprocess
 
 # Definición de colores para resaltar los caminos en el laberinto
 COLORS = ['\033[91m', '\033[92m', '\033[93m', '\033[94m', '\033[95m', '\033[96m', '\033[97m']
@@ -17,6 +19,7 @@ class Dijkstra:
         self.visitados = [[False] * self.m for _ in range(self.n)]
         self.cola_prioridad = [(0, inicio)]
 
+    @profile
     def dijkstra_laberinto(self):
         while self.cola_prioridad:
             distancia_actual, nodo_actual = heapq.heappop(self.cola_prioridad)
@@ -75,30 +78,15 @@ class Dijkstra:
                     print(str(celda), end=' ')
             print()
 
-    def resolver_laberinto_ejemplo(self):
+    def resolver_laberinto(self):
             inicio_tiempo = time.time()
             ruta_minima = self.dijkstra_laberinto()
             tiempo_total = time.time() - inicio_tiempo
-
+            
             ruta_minima_str = ' -> '.join(f'({x},{y})' for x, y in ruta_minima)
 
+            print("\nTiempo de ejecución:", tiempo_total, "segundos")            
             print("Ruta mínima:", ruta_minima_str)
-            print("Tiempo total:", tiempo_total, "segundos")
-
             print("\nLaberinto con Ruta:")
             self.imprimir_laberinto_con_ruta(ruta_minima)
 
-# Crear el laberinto (cambiarlo por tu laberinto real)
-laberinto_ejemplo = [
-    [0, 1, 0, 0, 0],
-    [2, 0, 1, 1, 0],
-    [0, 0, 0, 1, 0],
-    [0, 1, 1, 0, 0],
-    [0, 0, 0, 0, 3]
-]
-
-inicio_ejemplo = (1, 0)
-meta_ejemplo = (4, 4)
-
-laberinto_solver = Dijkstra(laberinto_ejemplo, inicio_ejemplo, meta_ejemplo)
-laberinto_solver.resolver_laberinto_ejemplo()

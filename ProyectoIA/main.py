@@ -38,7 +38,7 @@ def cargaCSV(nombre_archivo, algoritmo):
     match algoritmo:
         case "1":
             dijkstra = Dijkstra(laberinto, inicio, meta)
-            dijkstra.resolver_laberinto_ejemplo()
+            dijkstra.resolver_laberinto()
         case "2":
             print("hi")
             
