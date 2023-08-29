@@ -41,10 +41,13 @@ def cargaCSV(nombre_archivo, algoritmo):
             dijkstra.resolver_laberinto()
         case "2":
             print("hi")
-            bellman = Bellman(laberinto)
-            ruta_minima = bellman.bellman_ford(inicio, meta)
-            print("Ruta mínima:", ruta_minima)
-            print("Longitud de la ruta:", len(ruta_minima))
+            bellman = Bellman(laberinto, inicio, meta)
+            ruta_minima = bellman.bellman_ford()
+            if ruta_minima == "Ciclo negativo detectado":
+                print("Se detectó un ciclo negativo en la matriz.")
+            else:
+                print("Ruta mínima:", ruta_minima)
+                print("Longitud de la ruta:", len(ruta_minima))
             
         case _:
             print("Incorrecto!")
