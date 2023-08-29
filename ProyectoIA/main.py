@@ -14,7 +14,7 @@ def menu():
             
         case "2":
             print("Elegiste la opcion 2, Bellman\n")
-            
+            cargaCSV("Matriz.csv", "2")
             
         case "3":
             print("Elegiste la opcion 3, DFS\n")
@@ -34,13 +34,17 @@ def cargaCSV(nombre_archivo, algoritmo):
     print("Coordenadas del punto final:", meta)
     
     # este metodo recibe todos los metodos y solo tiene que pasarle a cada uno sus parametros que solicita
-    # por ejemplo, "1" es dijkstra
+    # por ejemplo, "1" es dijkstra, "2" es Bellman y asi sucesivamente
     match algoritmo:
         case "1":
             dijkstra = Dijkstra(laberinto, inicio, meta)
             dijkstra.resolver_laberinto()
         case "2":
             print("hi")
+            bellman = Bellman(laberinto)
+            ruta_minima = bellman.bellman_ford(inicio, meta)
+            print("Ruta mínima:", ruta_minima)
+            print("Longitud de la ruta:", len(ruta_minima))
             
         case _:
             print("Incorrecto!")
