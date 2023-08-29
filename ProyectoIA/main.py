@@ -1,16 +1,45 @@
-# This is a sample Python script.
+from ReadCSV import cargar_laberinto, imprimir_laberinto
+from Dijkstra import Dijkstra
 
-# Press Mayús+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+def menu():
+    print("\n\n     ≫ Primer proyecto IA ≪\n\n")
+    opc = input("Por favor, digite la opcion que desea escoger: \n1- Dijkstra \n2- Bellman \n3- Depht First Search (DFS) \n4- Breadth-First Search (BFS) \n5- A* Search \n\nOpcion: ")
+    
+    match opc:
+        case "1":
+            print("Elegiste la opcion 1, Dijkstra\n")
+            cargaCSV("Matriz.csv", "1")
+            
+        case "2":
+            print("Elegiste la opcion 2, Bellman\n")
+        case "3":
+            print("Elegiste la opcion 3, DFS\n")
+        case "4":
+            print("Elegiste la opcion 4, BFS\n")
+        case "5":
+            print("Elegiste la opcion 5, A * Search\n")
+        case _:
+            print("Opcion incorrecta! Digite nuevamente\n")
+            
+            
+def cargaCSV(nombre_archivo, algoritmo):
+    laberinto, inicio, meta = cargar_laberinto(nombre_archivo)
+    print("Laberinto Inicial:")
+    imprimir_laberinto(laberinto)
+    print("\nCoordenadas del punto de inicio:", inicio)
+    print("Coordenadas del punto final:", meta)
+    
+    # este metodo recibe todos los metodos y solo tiene que pasarle a cada uno sus parametros que solicita
+    # por ejemplo, "1" es dijkstra
+    match algoritmo:
+        case "1":
+            dijkstra = Dijkstra(laberinto, inicio, meta)
+            dijkstra.resolver_laberinto_ejemplo()
+        case "2":
+            print("Este es el de Bellman")
+        case _:
+            print("Incorrecto!")
+            
 
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
-
-
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
-
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+if __name__ == '__main__':    
+    menu()
