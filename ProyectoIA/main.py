@@ -1,20 +1,27 @@
-from ReadCSV import cargar_laberinto, imprimir_laberinto
+from GenerarMatriz import generar_y_guardar_matriz
+from ReadCSV import cargar_laberinto, imprimir_laberinto, obtener_ruta_matriz_mas_actualizada
 from Dijkstra import Dijkstra
 from Bellman import Bellman
+import os
 # from memory_profiler import profile
 
 def menu():
     print("\n\n     ≫ Primer proyecto IA ≪\n\n")
+
+    n = input("Por favor, digite el numero de filas de la matriz: ")
+    m = input("Por favor, digite el numero de columnas de la matriz: ")
+    generar_y_guardar_matriz(int(n), int(m))
+
     opc = input("Por favor, digite la opcion que desea escoger: \n1- Dijkstra \n2- Bellman \n3- Depht First Search (DFS) \n4- Breadth-First Search (BFS) \n5- A* Search \n\nOpcion: ")
     
     match opc:
         case "1":
             print("Elegiste la opcion 1, Dijkstra\n")
-            cargaCSV("Matriz.csv", "1")
+            cargaCSV("1")
             
         case "2":
             print("Elegiste la opcion 2, Bellman\n")
-            cargaCSV("Matriz.csv", "2")
+            cargaCSV("2")
             
         case "3":
             print("Elegiste la opcion 3, DFS\n")
@@ -26,8 +33,14 @@ def menu():
             print("Opcion incorrecta! Digite nuevamente\n")
             
             
-def cargaCSV(nombre_archivo, algoritmo):
-    laberinto, inicio, meta = cargar_laberinto(nombre_archivo)
+def cargaCSV(algoritmo):
+
+    directorio_actual = os.path.dirname(os.path.abspath(__file__))
+    carpeta_matrices = os.path.join(directorio_actual, 'MatricesGeneradas')
+    ruta_archivo = obtener_ruta_matriz_mas_actualizada(carpeta_matrices)
+    print("Ruta del archivo:", ruta_archivo)
+
+    laberinto, inicio, meta = cargar_laberinto(ruta_archivo)
     print("Laberinto Inicial:")
     imprimir_laberinto(laberinto)
     print("\nCoordenadas del punto de inicio:", inicio)
