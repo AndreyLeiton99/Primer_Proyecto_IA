@@ -30,28 +30,34 @@ class DFS:
         self.visitados = [[False] * self.m for _ in range(self.n)]  # Inicializar la matriz de visitados
 
     def dfs_laberinto(self, x, y):
-       # print("Visitados", self.visitados)
-        if x < 0 or x >= self.n or y < 0 or y >= self.m or self.laberinto[x][y] == 1 or self.visitados[x][y]:
-            return
+      
+        # no se puede pasar por los obstáculos, solo por los espacios vacíos
+        # Si se sale de los límites o es un obstáculo o ya fue visitado, retornar
+        if x < 0 or x >= self.n or y < 0 or y >= self.m or self.laberinto[x][y] == 1 or self.visitados[x][y]: 
+            return 
 
         self.visitados[x][y] = True  # Marcar como visitado
-        self.camino_actual.append((x, y))
+        self.camino_actual.append((x, y)) # Agregar a la ruta actual la celda actual 
 
+        # Si se llega a la meta, actualizar la ruta mínima si es necesario
         if (x, y) == self.meta:
+            # Si la ruta mínima no existe o la ruta actual es más corta que la ruta mínima, actualizar la ruta mínima
             if not self.ruta_minima or len(self.camino_actual) < len(self.ruta_minima):
+                # Copiar la ruta actual en la ruta mínima
                 self.ruta_minima = self.camino_actual.copy()
 
-        self.dfs_laberinto(x + 1, y)
-        self.dfs_laberinto(x - 1, y)
-        self.dfs_laberinto(x, y + 1)
-        self.dfs_laberinto(x, y - 1)
+        # Llamar recursivamente a la función para cada vecino
+        self.dfs_laberinto(x + 1, y) # Derecha
+        self.dfs_laberinto(x - 1, y) # Izquierda
+        self.dfs_laberinto(x, y + 1) # Arriba
+        self.dfs_laberinto(x, y - 1) # Abajo
 
-        self.visitados[x][y] = False  # Marcar como no visitado
-        self.camino_actual.pop()
+        self.visitados[x][y] = False  # Marcar como no visitado, para poder volver a pasar por la celda en otra ruta
+        self.camino_actual.pop() # Eliminar la celda actual de la ruta actual
 
     def encontrar_ruta_minima(self):
+        # Llamar a la función recursiva para encontrar la ruta mínima
         self.dfs_laberinto(self.inicio[0], self.inicio[1])
-        print("La ruta mínima corresponde a:", self.ruta_minima)
         return self.ruta_minima
 
 
@@ -68,7 +74,7 @@ class DFS:
                 if 0 <= nx < self.n and 0 <= ny < self.m:
                     vecinos.append(((nx, ny), self.distancias[nx][ny]))
 
-            vecinos.sort(key=lambda v: v[1])
+            vecinos.sort(key=lambda v: v[1]) # Ordenar por distancia, de menor a mayor, para escoger el vecino más cercano a la meta
 
             x, y = vecinos[0][0]
 
@@ -87,6 +93,7 @@ class DFS:
             print()
 
     def resolver_laberinto(self):
+            print("Resolviendo laberinto con DFS...")
             inicio_tiempo = time.time()
             mem_usage = memory_profiler.memory_usage()
             ruta_minima = self.encontrar_ruta_minima()
@@ -102,7 +109,8 @@ class DFS:
             self.imprimir_laberinto_con_ruta(ruta_minima)
 
 
-
+"""
+        
 if __name__ == '__main__':
     # Definir la matriz de ejemplo y coordenadas de inicio y meta
     laberinto_ejemplo = [
@@ -126,5 +134,6 @@ if __name__ == '__main__':
  
     DFS = DFS(laberinto_ejemplo, inicio, meta)
     DFS.resolver_laberinto()
-    print(DFS.encontrar_ruta_minima())
+
+    """
 

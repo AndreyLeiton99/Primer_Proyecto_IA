@@ -2,6 +2,7 @@ from GenerarMatriz import generar_y_guardar_matriz
 from ReadCSV import cargar_laberinto, imprimir_laberinto, obtener_ruta_matriz_mas_actualizada
 from Dijkstra import Dijkstra
 from Bellman import Bellman
+from DepthFirstSearch_DFS import DFS
 import os
 # from memory_profiler import profile
 
@@ -30,10 +31,14 @@ def menu():
             
         case "3":
             print("Elegiste la opcion 3, DFS\n")
+            cargaCSV("3")
+            
         case "4":
             print("Elegiste la opcion 4, BFS\n")
+
         case "5":
             print("Elegiste la opcion 5, A * Search\n")
+
         case _:
             print("Opcion incorrecta! Digite nuevamente\n")
             
@@ -63,10 +68,14 @@ def cargaCSV(algoritmo):
             ruta_minima = bellman.bellman_ford(inicio, meta)
             print("Ruta mínima:", ruta_minima)
             print("Longitud de la ruta:", len(ruta_minima))
-            
+        case "3":            
+            dfs = DFS(laberinto, inicio, meta)
+            dfs.resolver_laberinto()
+
         case _:
             print("Incorrecto!")
             
 
 if __name__ == '__main__':    
-    menu()
+    while True:
+        menu()
