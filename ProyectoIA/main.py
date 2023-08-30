@@ -8,13 +8,18 @@ import os
 def menu():
     print("\n\n     ≫ Primer proyecto IA ≪\n\n")
 
-    n = input("Por favor, digite el numero de filas de la matriz: ")
-    m = input("Por favor, digite el numero de columnas de la matriz: ")
-    generar_y_guardar_matriz(int(n), int(m))
+    
 
-    opc = input("Por favor, digite la opcion que desea escoger: \n1- Dijkstra \n2- Bellman \n3- Depht First Search (DFS) \n4- Breadth-First Search (BFS) \n5- A* Search \n\nOpcion: ")
+    opc = input("Por favor, digite la opcion que desea escoger: \n0- Generar otra matriz \n1- Dijkstra \n2- Bellman \n3- Depht First Search (DFS) \n4- Breadth-First Search (BFS) \n5- A* Search \n\nOpcion: ")
     
     match opc:
+        case "0":
+            print("Elegiste la opcion 0, generar otra matriz\n")
+            n = input("Por favor, digite el numero de filas de la matriz: ")
+            m = input("Por favor, digite el numero de columnas de la matriz: ")
+            generar_y_guardar_matriz(int(n), int(m))
+            print("Matriz generada!")
+
         case "1":
             print("Elegiste la opcion 1, Dijkstra\n")
             cargaCSV("1")
