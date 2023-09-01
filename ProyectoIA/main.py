@@ -3,6 +3,7 @@ from ReadCSV import cargar_laberinto, imprimir_laberinto, obtener_ruta_matriz_ma
 from Dijkstra import Dijkstra
 from Bellman import Bellman
 from DepthFirstSearch_DFS import DFS
+from AStarSearch import AStarSearch
 import os
 # from memory_profiler import profile
 
@@ -38,6 +39,7 @@ def menu():
 
         case "5":
             print("Elegiste la opcion 5, A * Search\n")
+            cargaCSV("5")
 
         case _:
             print("Opcion incorrecta! Digite nuevamente\n")
@@ -71,7 +73,10 @@ def cargaCSV(algoritmo):
         case "3":            
             dfs = DFS(laberinto, inicio, meta)
             dfs.resolver_laberinto()
-
+        case "5":
+            astar_solver = AStarSearch(laberinto)
+            path = astar_solver.a_star_search(inicio, meta)
+            print("Ruta mínima:", path)
         case _:
             print("Incorrecto!")
             
