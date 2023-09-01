@@ -1,10 +1,11 @@
 import heapq
 import time
-from memory_profiler import profile
+import memory_profiler
 import subprocess
 
 # Definición de colores para resaltar los caminos en el laberinto
-COLORS = ['\033[91m', '\033[92m', '\033[93m', '\033[94m', '\033[95m', '\033[96m', '\033[97m']
+COLORS = ['\033[91m', '\033[92m', '\033[93m', '\033[94m', '\033[95m', '\033[96m', '\033[33m', '\033[96m'
+          , '\033[35m', '\033[33m', '\033[34m', '\033[95m', '\033[32m']
 RESET_COLOR = '\033[0m'
 
 class Dijkstra:
@@ -19,7 +20,6 @@ class Dijkstra:
         self.visitados = [[False] * self.m for _ in range(self.n)]
         self.cola_prioridad = [(0, inicio)]
 
-    @profile
     def dijkstra_laberinto(self):
         while self.cola_prioridad:
             distancia_actual, nodo_actual = heapq.heappop(self.cola_prioridad)
@@ -45,6 +45,7 @@ class Dijkstra:
                         heapq.heappush(self.cola_prioridad, (nueva_distancia, (nx, ny)))
 
         ruta_minima = self.reconstruir_ruta()
+        print("La ruta mínima corresponde a:", ruta_minima)
         return ruta_minima
 
     def reconstruir_ruta(self):
@@ -80,13 +81,17 @@ class Dijkstra:
 
     def resolver_laberinto(self):
             inicio_tiempo = time.time()
+            mem_usage = memory_profiler.memory_usage()
             ruta_minima = self.dijkstra_laberinto()
+            mem_usage_end = memory_profiler.memory_usage()
             tiempo_total = time.time() - inicio_tiempo
             
             ruta_minima_str = ' -> '.join(f'({x},{y})' for x, y in ruta_minima)
 
-            print("\nTiempo de ejecución:", tiempo_total, "segundos")            
+            print("\nTiempo de ejecución:", tiempo_total, "segundos")  
+            print("Consumo de memoria:", max(mem_usage_end) - max(mem_usage), "MB")          
             print("Ruta mínima:", ruta_minima_str)
             print("\nLaberinto con Ruta:")
             self.imprimir_laberinto_con_ruta(ruta_minima)
+
 

@@ -2,19 +2,25 @@ from GenerarMatriz import generar_y_guardar_matriz
 from ReadCSV import cargar_laberinto, imprimir_laberinto, obtener_ruta_matriz_mas_actualizada
 from Dijkstra import Dijkstra
 from Bellman import Bellman
+from DepthFirstSearch_DFS import DFS
 import os
 # from memory_profiler import profile
 
 def menu():
     print("\n\n     ≫ Primer proyecto IA ≪\n\n")
 
-    n = input("Por favor, digite el numero de filas de la matriz: ")
-    m = input("Por favor, digite el numero de columnas de la matriz: ")
-    generar_y_guardar_matriz(int(n), int(m))
+    
 
-    opc = input("Por favor, digite la opcion que desea escoger: \n1- Dijkstra \n2- Bellman \n3- Depht First Search (DFS) \n4- Breadth-First Search (BFS) \n5- A* Search \n\nOpcion: ")
+    opc = input("Por favor, digite la opcion que desea escoger: \n0- Generar otra matriz \n1- Dijkstra \n2- Bellman \n3- Depht First Search (DFS) \n4- Breadth-First Search (BFS) \n5- A* Search \n\nOpcion: ")
     
     match opc:
+        case "0":
+            print("Elegiste la opcion 0, generar otra matriz\n")
+            n = input("Por favor, digite el numero de filas de la matriz: ")
+            m = input("Por favor, digite el numero de columnas de la matriz: ")
+            generar_y_guardar_matriz(int(n), int(m))
+            print("Matriz generada!")
+
         case "1":
             print("Elegiste la opcion 1, Dijkstra\n")
             cargaCSV("1")
@@ -25,10 +31,14 @@ def menu():
             
         case "3":
             print("Elegiste la opcion 3, DFS\n")
+            cargaCSV("3")
+            
         case "4":
             print("Elegiste la opcion 4, BFS\n")
+
         case "5":
             print("Elegiste la opcion 5, A * Search\n")
+
         case _:
             print("Opcion incorrecta! Digite nuevamente\n")
             
@@ -54,17 +64,18 @@ def cargaCSV(algoritmo):
             dijkstra.resolver_laberinto()
         case "2":
             print("hi")
-            bellman = Bellman(laberinto, inicio, meta)
-            ruta_minima = bellman.bellman_ford()
-            if ruta_minima == "Ciclo negativo detectado":
-                print("Se detectó un ciclo negativo en la matriz.")
-            else:
-                print("Ruta mínima:", ruta_minima)
-                print("Longitud de la ruta:", len(ruta_minima))
-            
+            bellman = Bellman(laberinto)
+            ruta_minima = bellman.bellman_ford(inicio, meta)
+            print("Ruta mínima:", ruta_minima)
+            print("Longitud de la ruta:", len(ruta_minima))
+        case "3":            
+            dfs = DFS(laberinto, inicio, meta)
+            dfs.resolver_laberinto()
+
         case _:
             print("Incorrecto!")
             
 
 if __name__ == '__main__':    
-    menu()
+    while True:
+        menu()
