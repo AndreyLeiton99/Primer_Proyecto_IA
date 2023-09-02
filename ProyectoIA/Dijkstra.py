@@ -1,11 +1,8 @@
 import heapq
 import time
 import memory_profiler
+from MetodosDeImpresion import imprimir_datos
 
-# Definición de colores para resaltar los caminos en el laberinto
-COLORS = ['\033[91m', '\033[92m', '\033[93m', '\033[94m', '\033[95m', '\033[96m',
-          '\033[33m', '\033[96m', '\033[35m', '\033[33m', '\033[34m', '\033[95m', '\033[32m']
-RESET_COLOR = '\033[0m'
 
 
 class Dijkstra:
@@ -25,8 +22,7 @@ class Dijkstra:
 
     def dijkstra_laberinto(self):
         while self.cola_prioridad:  # Mientras la cola de prioridad no esté vacía
-            distancia_actual, nodo_actual = heapq.heappop(
-                self.cola_prioridad)  # Obtener la celda con la menor distancia
+            distancia_actual, nodo_actual = heapq.heappop(self.cola_prioridad)  # Obtener la celda con la menor distancia
             x, y = nodo_actual  # Obtener las coordenadas de la celda
 
             if nodo_actual == self.meta:  # Si la celda actual es la meta
@@ -39,25 +35,28 @@ class Dijkstra:
             self.visitados.add(nodo_actual)
 
             # Iterar sobre los vecinos de la celda actual
-            for dx, dy in [(1, 0), (-1, 0), (0, 1), (0, -1)]:
-                nx, ny = x + dx, y + dy  # Obtener las coordenadas del vecino
-
-                # Si el vecino está dentro del laberinto y no es un obstáculo
-                if 0 <= nx < self.n and 0 <= ny < self.m and self.laberinto[nx][ny] == 0:
-                    # La distancia al vecino es la distancia de la celda actual + 1
-                    nueva_distancia = distancia_actual + 1
-
-                    # Si la nueva distancia es menor a la distancia actual del vecino
-                    if nueva_distancia < self.distancias[nx][ny]:
-                        # el vecino seria parte de la ruta minima, por lo que se agrega a la cola de prioridad con su nueva distancia
-                        # Actualizar la distancia del vecino a la nueva distancia
-                        self.distancias[nx][ny] = nueva_distancia
-                        # Agregar el vecino a la cola de prioridad
-                        heapq.heappush(self.cola_prioridad,
-                                       (nueva_distancia, (nx, ny)))
+            self.obtener_vecinos(distancia_actual, x, y)
 
         ruta_minima = self.reconstruir_ruta()  # Reconstruir la ruta mínima
         return ruta_minima
+
+    def obtener_vecinos(self, distancia_actual, x, y):
+        for dx, dy in [(1, 0), (-1, 0), (0, 1), (0, -1)]:
+            nx, ny = x + dx, y + dy  # Obtener las coordenadas del vecino
+
+                # Si el vecino está dentro del laberinto y no es un obstáculo
+            if 0 <= nx < self.n and 0 <= ny < self.m and self.laberinto[nx][ny] == 0:
+                    # La distancia al vecino es la distancia de la celda actual + 1
+                nueva_distancia = distancia_actual + 1
+
+                    # Si la nueva distancia es menor a la distancia actual del vecino
+                if nueva_distancia < self.distancias[nx][ny]:
+                        # el vecino seria parte de la ruta minima, por lo que se agrega a la cola de prioridad con su nueva distancia
+                        # Actualizar la distancia del vecino a la nueva distancia
+                    self.distancias[nx][ny] = nueva_distancia
+                        # Agregar el vecino a la cola de prioridad
+                    heapq.heappush(self.cola_prioridad,
+                                       (nueva_distancia, (nx, ny)))
 
     def reconstruir_ruta(self):
         ruta = []
@@ -87,17 +86,6 @@ class Dijkstra:
         ruta.reverse()  # Invertir la ruta para que vaya desde el inicio hasta la meta
         return ruta
 
-    # Imprimir el laberinto con la ruta mínima resaltada en colores
-    def imprimir_laberinto_con_ruta(self, ruta):
-        for i in range(self.n):
-            for j in range(self.m):
-                if (i, j) in ruta:
-                    color_index = ruta.index((i, j)) % len(COLORS)
-                    print(COLORS[color_index] +
-                          str(self.laberinto[i][j]) + RESET_COLOR, end=' ')
-                else:
-                    print(self.laberinto[i][j], end=' ')
-            print()
 
     # Método para resolver el laberinto con Dijkstra y medir el tiempo de ejecución y consumo de memoria
     def resolver_laberinto(self):
@@ -108,25 +96,17 @@ class Dijkstra:
         mem_usage_end = memory_profiler.memory_usage()
         tiempo_total = time.time() - inicio_tiempo
 
-        print("\nTiempo de ejecución:", tiempo_total, "segundos")
-        print("Consumo de memoria:", max(mem_usage_end) - max(mem_usage), "MB")
+        imprimir_datos(mem_usage, ruta_minima, mem_usage_end, tiempo_total, self.laberinto, self.n, self.m)
 
-        if ruta_minima:
-            ruta_minima_str = ' -> '.join(f'({x},{y})' for x, y in ruta_minima)
-            print("Ruta mínima:", ruta_minima_str)
-            print("\nLaberinto con Ruta:")
-            self.imprimir_laberinto_con_ruta(ruta_minima)
-        else:
-            ruta_minima_str = "No se encontró una ruta."
-            print("Ruta mínima:", ruta_minima_str)
-
-
+    
 if __name__ == '__main__':
     # Definir la matriz de ejemplo y coordenadas de inicio y meta
     laberinto_ejemplo = [
-        [2, 1, 3],
-        [0, 1, 0],
-        [0, 0, 0]
+    [2, 0, 0, 0, 0],
+    [1, 1, 0, 1, 0],
+    [0, 0, 0, 0, 0],
+    [0, 1, 1, 1, 0],
+    [0, 0, 0, 0, 3]
     ]
 
     inicio = None

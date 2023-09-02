@@ -8,11 +8,8 @@
 import time
 import memory_profiler
 import numpy as np  # Agregar numpy para matrices más eficientes
+from MetodosDeImpresion import imprimir_datos
 
-# Definición de colores para resaltar los caminos en el laberinto
-COLORS = ['\033[91m', '\033[92m', '\033[93m', '\033[94m', '\033[95m', '\033[96m',
-          '\033[33m', '\033[96m', '\033[35m', '\033[33m', '\033[34m', '\033[95m', '\033[32m']
-RESET_COLOR = '\033[0m'
 
 
 class Bellman:
@@ -57,6 +54,12 @@ class Bellman:
                                 self.padres[vecino_x][vecino_y] = (x, y)
 
         # Verificar si hay ciclos negativos en el laberinto
+        self.ciclos_negativos()        
+
+        ruta = self.obtener_ruta_minima()
+        return ruta
+    
+    def ciclos_negativos(self):
         for x in range(self.n):
             for y in range(self.m):
                 if self.laberinto[x][y] != 1:  # Si la celda no es un obstáculo
@@ -66,9 +69,6 @@ class Bellman:
                         if self.distancias[x][y] + 1 < self.distancias[vecino_x][vecino_y]:
                             print("Hay un ciclo negativo en el laberinto.")
                             return None
-
-        ruta = self.obtener_ruta_minima()
-        return ruta
 
     def obtener_ruta_minima(self):
         ruta = []
@@ -92,17 +92,6 @@ class Bellman:
                 vecinos.append((new_x, new_y))
         return vecinos
 
-    def imprimir_laberinto_con_ruta(self, ruta):
-        for i in range(self.n):
-            for j in range(self.m):
-                if (i, j) in ruta:
-                    color_index = ruta.index((i, j)) % len(COLORS)
-                    print(COLORS[color_index] +
-                          str(self.laberinto[i, j]) + RESET_COLOR, end=' ')
-                else:
-                    print(self.laberinto[i, j], end=' ')
-            print()
-
     def resolver_laberinto(self):
         print("Resolviendo laberinto con Bellman-Ford...")
         inicio_tiempo = time.time()
@@ -113,25 +102,17 @@ class Bellman:
         mem_usage_end = memory_profiler.memory_usage()
         tiempo_total = time.time() - inicio_tiempo
 
-        print("\nTiempo de ejecución:", tiempo_total, "segundos")
-        print("Consumo de memoria:", max(mem_usage_end) - max(mem_usage), "MB")
-
-        if ruta_minima is not None:
-            ruta_minima_str = ' -> '.join(f'({x},{y})' for x, y in ruta_minima)
-            print("Ruta mínima:", ruta_minima_str)
-            print("\nLaberinto con Ruta:")
-            self.imprimir_laberinto_con_ruta(ruta_minima)
-        else:
-            ruta_minima_str = "No se encontró una ruta."
-            print("Ruta mínima:", ruta_minima_str)
+        imprimir_datos(mem_usage, ruta_minima, mem_usage_end, tiempo_total, self.laberinto, self.n, self.m)
 
 
 if __name__ == '__main__':
     # Definir la matriz de ejemplo y coordenadas de inicio y meta
     laberinto_ejemplo = [
-        [2, 0, 3],
-        [0, 0, 0],
-        [0, 0, 0]
+    [2, 0, 0, 0, 0],
+    [1, 1, 0, 1, 0],
+    [0, 0, 0, 0, 0],
+    [0, 1, 1, 1, 0],
+    [0, 0, 0, 0, 3]
     ]
 
     inicio = None

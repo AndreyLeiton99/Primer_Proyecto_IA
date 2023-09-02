@@ -9,11 +9,7 @@ import time
 import memory_profiler
 from collections import deque
 import numpy as np  # Agregar numpy para matrices más eficientes
-
-# Definición de colores para resaltar los caminos en el laberinto
-COLORS = ['\033[91m', '\033[92m', '\033[93m', '\033[94m', '\033[95m', '\033[96m',
-          '\033[33m', '\033[96m', '\033[35m', '\033[33m', '\033[34m', '\033[95m', '\033[32m']
-RESET_COLOR = '\033[0m'
+from MetodosDeImpresion import imprimir_datos
 
 
 class BFS:
@@ -37,10 +33,10 @@ class BFS:
 
     def bfs_laberinto(self):
         while self.queue:  # Mientras la cola no esté vacía
-            # Obtener el primer elemento de la cola
+            # Obtener el primer elemento de la cola, para obtener la celda actual y la ruta actual
             (x, y), ruta_minima = self.queue.popleft()
 
-            if (x, y) == self.meta:  # Si la celda actual es la meta, retornar la ruta actual
+            if (x, y) == self.meta:  # Si la celda actual es la meta, retornar la ruta actual, que ya contiene los elementos de la ruta mínima
                 # Agregar la coordenada de inicio al principio de la ruta
                 ruta_minima.insert(0, self.inicio)
                 return ruta_minima
@@ -51,33 +47,24 @@ class BFS:
                 # Obtener las nuevas coordenadas de la celda a la que se puede mover
                 new_y = y + self.dy[i]
 
-                if (
+                self.actualizar_ruta_minima(ruta_minima, new_x, new_y) # Actualizar la ruta mínima, para cada vecino
+        return None 
+
+    def actualizar_ruta_minima(self, ruta_minima, new_x, new_y): # Verificar que las nuevas coordenadas estén dentro de los límites
+        if (
                     0 <= new_x < self.n
                     and 0 <= new_y < self.m  # Si las nuevas coordenadas están dentro de los límites
-                    # Para considerar la meta con valor 3, y no considerar los obstáculos con valor 1
+                    # Si la celda no es un obstáculo
                     and self.laberinto[new_x][new_y] != 1
-                    # Si la celda no ha sido visitada
+                    # Si la celda no ha sido visitada antes
                     and not self.visitado[new_x][new_y]
                 ):
                     # Marcar la celda como visitada
-                    self.visitado[new_x][new_y] = True
-                    # Agregar la celda a la ruta actual
-                    nueva_ruta = ruta_minima + [(new_x, new_y)]
-                    # Agregar la celda a la cola con la ruta actual
-                    self.queue.append(((new_x, new_y), nueva_ruta))
-
-        return None  # Si no se encontró una ruta, retornar None
-
-    def imprimir_laberinto_con_ruta(self, ruta):
-        for i in range(self.n):
-            for j in range(self.m):
-                if (i, j) in ruta:
-                    color_index = ruta.index((i, j)) % len(COLORS)
-                    print(COLORS[color_index] +
-                          str(self.laberinto[i, j]) + RESET_COLOR, end=' ')
-                else:
-                    print(self.laberinto[i, j], end=' ')
-            print()
+            self.visitado[new_x][new_y] = True
+                    # Agregar la celda a la ruta actual, que es la ruta mínima hasta el momento
+            nueva_ruta = ruta_minima + [(new_x, new_y)]
+                    # Agregar la celda a la cola con la ruta actual, para seguir buscando desde esa celda en la siguiente iteración
+            self.queue.append(((new_x, new_y), nueva_ruta)) 
 
     def resolver_laberinto(self):
         print("Resolviendo laberinto con BFS...")
@@ -89,25 +76,17 @@ class BFS:
         mem_usage_end = memory_profiler.memory_usage()
         tiempo_total = time.time() - inicio_tiempo
 
-        print("\nTiempo de ejecución:", tiempo_total, "segundos")
-        print("Consumo de memoria:", max(mem_usage_end) - max(mem_usage), "MB")
-
-        if ruta_minima is not None:
-            ruta_minima_str = ' -> '.join(f'({x},{y})' for x, y in ruta_minima)
-            print("Ruta mínima:", ruta_minima_str)
-            print("\nLaberinto con Ruta:")
-            self.imprimir_laberinto_con_ruta(ruta_minima)
-        else:
-            ruta_minima_str = "No se encontró una ruta."
-            print("Ruta mínima:", ruta_minima_str)
+        imprimir_datos(mem_usage, ruta_minima, mem_usage_end, tiempo_total, self.laberinto, self.n, self.m)
 
 
 if __name__ == '__main__':
     # Definir la matriz de ejemplo y coordenadas de inicio y meta
     laberinto_ejemplo = [
-        [2, 0, 3],
-        [1, 1, 0],
-        [0, 0, 0]
+    [2, 0, 0, 0, 0],
+    [1, 1, 0, 1, 0],
+    [0, 0, 0, 0, 0],
+    [0, 1, 1, 1, 0],
+    [0, 0, 0, 0, 3]
     ]
 
     inicio = None

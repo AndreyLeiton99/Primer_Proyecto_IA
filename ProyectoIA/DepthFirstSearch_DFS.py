@@ -11,12 +11,7 @@
 
 import time
 import memory_profiler
-
-
-# Definición de colores para resaltar los caminos en el laberinto
-COLORS = ['\033[91m', '\033[92m', '\033[93m', '\033[94m', '\033[95m', '\033[96m',
-          '\033[33m', '\033[96m', '\033[35m', '\033[33m', '\033[34m', '\033[95m', '\033[32m']
-RESET_COLOR = '\033[0m'
+from MetodosDeImpresion import imprimir_datos
 
 
 class DFS:
@@ -64,17 +59,6 @@ class DFS:
         self.dfs_laberinto(self.inicio[0], self.inicio[1])
         return self.ruta_minima
 
-    def imprimir_laberinto_con_ruta(self, ruta):
-        for i, fila in enumerate(self.laberinto):
-            for j, celda in enumerate(fila):
-                if (i, j) in ruta:
-                    color_index = ruta.index((i, j)) % len(COLORS)
-                    print(COLORS[color_index] +
-                          str(celda) + RESET_COLOR, end=' ')
-                else:
-                    print(str(celda), end=' ')
-            print()
-
     def resolver_laberinto(self):
         print("Resolviendo laberinto con DFS...")
         inicio_tiempo = time.time()
@@ -83,20 +67,9 @@ class DFS:
         mem_usage_end = memory_profiler.memory_usage()
         tiempo_total = time.time() - inicio_tiempo
 
-        print("\nTiempo de ejecución:", tiempo_total, "segundos")
-        print("Consumo de memoria:", max(mem_usage_end) - max(mem_usage), "MB")
-
-        if ruta_minima:
-            ruta_minima_str = ' -> '.join(f'({x},{y})' for x, y in ruta_minima)
-            print("Ruta mínima:", ruta_minima_str)
-            print("\nLaberinto con Ruta:")
-            self.imprimir_laberinto_con_ruta(ruta_minima)
-        else:
-            ruta_minima_str = "No se encontró una ruta."
-            print("Ruta mínima:", ruta_minima_str)
+        imprimir_datos(mem_usage, ruta_minima, mem_usage_end, tiempo_total, self.laberinto, self.n, self.m)
 
 
-"""
         
 if __name__ == '__main__':
     # Definir la matriz de ejemplo y coordenadas de inicio y meta
@@ -122,4 +95,4 @@ if __name__ == '__main__':
     DFS = DFS(laberinto_ejemplo, inicio, meta)
     DFS.resolver_laberinto()
 
-    """
+
