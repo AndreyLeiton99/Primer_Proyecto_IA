@@ -2,6 +2,7 @@ import csv
 import glob
 import os
 
+
 def cargar_laberinto(ruta_archivo):
     laberinto = []
     inicio = None
@@ -22,30 +23,32 @@ def cargar_laberinto(ruta_archivo):
 
     return laberinto, inicio, meta
 
+
 def imprimir_laberinto(laberinto):
     for fila in laberinto:
         print(' '.join(str(celda) for celda in fila))
 
+
 def obtener_ruta_matriz_mas_actualizada(carpeta):
     archivos_csv = glob.glob(os.path.join(carpeta, 'Matriz_*.csv'))
     consecutivos = []
-    
+
     for nombre in archivos_csv:
         base_nombre = os.path.basename(nombre)
         partes_nombre = base_nombre.split('_')
-        
+
         if len(partes_nombre) == 2 and partes_nombre[0] == 'Matriz':
             try:
                 consecutivo = int(partes_nombre[1].split('.')[0])
                 consecutivos.append(consecutivo)
             except ValueError:
                 pass
-    
+
     if consecutivos:
         consecutivo_maximo = max(consecutivos)
     else:
         consecutivo_maximo = 0
-    
+
     ruta_archivo = os.path.join(carpeta, f"Matriz_{consecutivo_maximo}.csv")
     print(f"Archivo más actualizado: {ruta_archivo}")
     return ruta_archivo
@@ -64,11 +67,3 @@ imprimir_laberinto(laberinto)
 print("\nCoordenadas del punto de inicio:", inicio)
 print("Coordenadas del punto final:", meta)
     """
-
-
-
-
-
-
-
-

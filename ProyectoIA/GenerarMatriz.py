@@ -1,9 +1,9 @@
 # Método que realice una matriz aleatoria de n x m, donde n y m son números enteros positivos
 # donde la matriz va a estar separada por ; y cada celda va a tener un valor de 0 o 3
-# que representan: 
-# 0 – Espacios por los cuales puede moverse el agente 
-# 1 – Paredes o obstáculos donde no se permite al agente caminar por ahí 
-# 2 – El punto de inicio 
+# que representan:
+# 0 – Espacios por los cuales puede moverse el agente
+# 1 – Paredes o obstáculos donde no se permite al agente caminar por ahí
+# 2 – El punto de inicio
 # 3 – El punto final o meta
 # solo puede haber un inicio y un final, los obstaculos pueden ser los que sean, siempre que haya un camino para llegar al final
 # el metodo debe recibir como parametros n y m, que son los numeros de filas y columnas respectivamente
@@ -12,6 +12,7 @@
 import os
 import csv
 import random
+
 
 def generar_matriz_aleatoria(n, m):
     if n <= 0 or m <= 0:
@@ -38,6 +39,7 @@ def generar_matriz_aleatoria(n, m):
 
     return matriz
 
+
 def guardar_matriz_en_csv(matriz, archivo):
     with open(archivo, 'w', newline='') as file:
         print(f"Guardando archivo en: {archivo}")
@@ -45,28 +47,30 @@ def guardar_matriz_en_csv(matriz, archivo):
         for fila in matriz:
             writer.writerow(fila)
 
+
 def generar_y_guardar_matriz(n, m):
     # Obtener la ruta del directorio actual donde se encuentra el script
     directorio_actual = os.path.dirname(__file__)
-    
+
     carpeta_destino = os.path.join(directorio_actual, "MatricesGeneradas")
-    
+
     if not os.path.exists(carpeta_destino):
         os.makedirs(carpeta_destino)
-    
+
     archivo_base = "Matriz"
-    
+
     consecutivo = 1
     archivo_actual = archivo_base
     while os.path.exists(os.path.join(carpeta_destino, f"{archivo_actual}_{consecutivo}.csv")):
         consecutivo += 1
-    
+
     matriz_aleatoria = generar_matriz_aleatoria(n, m)
-    archivo_path = os.path.join(carpeta_destino, f"{archivo_actual}_{consecutivo}.csv")
-    
+    archivo_path = os.path.join(
+        carpeta_destino, f"{archivo_actual}_{consecutivo}.csv")
+
     print(f"Matriz aleatoria generada y guardada en {archivo_path}")
     guardar_matriz_en_csv(matriz_aleatoria, archivo_path)
-    
+
 
 if __name__ == "__main__":
     n = 6  # Cambiar según lo deseado
