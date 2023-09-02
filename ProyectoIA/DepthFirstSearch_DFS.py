@@ -8,10 +8,10 @@
 # se debe imprimir la matriz final con el recorrido de la ruta minima con un color diferente
 # y cambiando por un 4 los espacios que ya se recorrieron y no estan en la ruta mas corta
 
-import heapq
+
 import time
 import memory_profiler
-import subprocess
+
 
 # Definición de colores para resaltar los caminos en el laberinto
 COLORS = ['\033[91m', '\033[92m', '\033[93m', '\033[94m', '\033[95m', '\033[96m', '\033[33m', '\033[96m'
@@ -60,28 +60,6 @@ class DFS:
         self.dfs_laberinto(self.inicio[0], self.inicio[1])
         return self.ruta_minima
 
-
-    def reconstruir_ruta(self):
-        ruta = []
-        x, y = self.meta
-
-        while (x, y) != self.inicio:
-            ruta.append((x, y))
-            vecinos = []
-
-            for dx, dy in [(1, 0), (-1, 0), (0, 1), (0, -1)]:
-                nx, ny = x + dx, y + dy
-                if 0 <= nx < self.n and 0 <= ny < self.m:
-                    vecinos.append(((nx, ny), self.distancias[nx][ny]))
-
-            vecinos.sort(key=lambda v: v[1]) # Ordenar por distancia, de menor a mayor, para escoger el vecino más cercano a la meta
-
-            x, y = vecinos[0][0]
-
-        ruta.append(self.inicio)
-        ruta.reverse()
-        return ruta
-
     def imprimir_laberinto_con_ruta(self, ruta):
         for i, fila in enumerate(self.laberinto):
             for j, celda in enumerate(fila):
@@ -99,14 +77,21 @@ class DFS:
             ruta_minima = self.encontrar_ruta_minima()
             mem_usage_end = memory_profiler.memory_usage()
             tiempo_total = time.time() - inicio_tiempo
-            
-            ruta_minima_str = ' -> '.join(f'({x},{y})' for x, y in ruta_minima)
 
             print("\nTiempo de ejecución:", tiempo_total, "segundos")  
-            print("Consumo de memoria:", max(mem_usage_end) - max(mem_usage), "MB")          
-            print("Ruta mínima:", ruta_minima_str)
-            print("\nLaberinto con Ruta:")
-            self.imprimir_laberinto_con_ruta(ruta_minima)
+            print("Consumo de memoria:", max(mem_usage_end) - max(mem_usage), "MB") 
+
+            if ruta_minima:
+                ruta_minima_str = ' -> '.join(f'({x},{y})' for x, y in ruta_minima)
+                print("Ruta mínima:", ruta_minima_str)
+                print("\nLaberinto con Ruta:")
+                self.imprimir_laberinto_con_ruta(ruta_minima)
+            else:
+                ruta_minima_str = "No se encontró una ruta."
+                print("Ruta mínima:", ruta_minima_str)
+
+        
+            
 
 
 """
