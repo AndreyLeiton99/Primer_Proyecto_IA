@@ -4,7 +4,7 @@ from Dijkstra import Dijkstra
 from Bellman import Bellman
 from BreadthFirstSearch_BFS import BFS
 from DepthFirstSearch_DFS import DFS
-from AStarSearch import AStarSearch
+from AStarSearch import AStar
 import os
 # from memory_profiler import profile
 
@@ -77,7 +77,15 @@ def cargaCSV(algoritmo):
         case "4":
             bfs = BFS(laberinto, inicio, meta)
             bfs.resolver_laberinto()
-
+        case "5":
+            pathfinder = AStar(laberinto)
+            route = pathfinder.find_path(inicio, meta)
+            if route:
+                route = route + [inicio]
+                route = route[::-1]
+                print(route)
+            else:
+                print("No se encontró un camino válido.")
         case _:
             print("Incorrecto!")
 

@@ -1,67 +1,67 @@
 import heapq
-import time
-import memory_profiler
-import subprocess
 
-class AStarSearch:
+class AStar:
     def __init__(self, grid):
         self.grid = grid
-        self.rows = len(grid)
-        self.cols = len(grid[0])
 
-    def heuristic(self, current, goal):
-        # Heurística de distancia Manhattan
-        return abs(current[0] - goal[0]) + abs(current[1] - goal[1])
+    def heuristic(self, a, b):
+        return ((b[0] - a[0]) ** 2 + (b[1] - a[1]) ** 2) ** 0.5
 
-    def a_star_search(self, start, end):
-        open_list = []
-        heapq.heappush(open_list, (0, start))
+    def find_path(self, start, goal):
+        neighbors = [(0, 1), (0, -1), (1, 0), (-1, 0), (1, 1), (1, -1), (-1, 1), (-1, -1)]
+        close_set = set()
         came_from = {}
-        g_score = {cell: float('inf') for row in self.grid for cell in row}
-        g_score[start] = 0
-        f_score = {cell: float('inf') for row in self.grid for cell in row}
-        f_score[start] = self.heuristic(start, end)
+        gscore = {start: 0}
+        fscore = {start: self.heuristic(start, goal)}
+        oheap = []
+        heapq.heappush(oheap, (fscore[start], start))
 
-        while open_list:
-            current_f, current = heapq.heappop(open_list)
-
-            if current == end:
-                path = []
+        while oheap:
+            current = heapq.heappop(oheap)[1]
+            if current == goal:
+                data = []
                 while current in came_from:
-                    path.append(current)
+                    data.append(current)
                     current = came_from[current]
-                path.append(start)
-                path.reverse()
-                return path
+                return data
 
-            for dr, dc in [(-1, 0), (1, 0), (0, -1), (0, 1)]:
-                nr, nc = current[0] + dr, current[1] + dc
-                neighbor = (nr, nc)
+            close_set.add(current)
+            for i, j in neighbors:
+                neighbor = current[0] + i, current[1] + j
+                tentative_g_score = gscore[current] + self.heuristic(current, neighbor)
+                if 0 <= neighbor[0] < len(self.grid):
+                    if 0 <= neighbor[1] < len(self.grid[0]):
+                        if self.grid[neighbor[0]][neighbor[1]] == 1:
+                            continue
+                    else:
+                        # array bound y walls
+                        continue
+                else:
+                    # array bound x walls
+                    continue
 
-                if 0 <= nr < self.rows and 0 <= nc < self.cols and self.grid[nr][nc] != 1:
-                    tentative_g_score = g_score[current] + 1
+                if neighbor in close_set and tentative_g_score >= gscore.get(neighbor, 0):
+                    continue
 
-                    if tentative_g_score < g_score[neighbor]:
-                        came_from[neighbor] = current
-                        g_score[neighbor] = tentative_g_score
-                        f_score[neighbor] = g_score[neighbor] + self.heuristic(neighbor, end)
-                        if neighbor not in [node[1] for node in open_list]:
-                            heapq.heappush(open_list, (f_score[neighbor], neighbor))
+                if tentative_g_score < gscore.get(neighbor, 0) or neighbor not in [i[1] for i in oheap]:
+                    came_from[neighbor] = current
+                    gscore[neighbor] = tentative_g_score
+                    fscore[neighbor] = tentative_g_score + self.heuristic(neighbor, goal)
+                    heapq.heappush(oheap, (fscore[neighbor], neighbor))
 
-        return None
+        return False
 
-# # Ejemplo de matriz (cambiar los valores según la descripción)
-# grid = [
-#     [0, 1, 0, 0, 0],
-#     [2, 0, 1, 1, 0],
-#     [0, 0, 0, 1, 0],
-#     [0, 1, 0, 3, 0],
-#     [0, 0, 0, 0, 1]
-# ]
+# # Ejemplo de uso
+# if __name__ == "__main__":
+#     grid = [  # Tu lista aquí ]
+#     start = (0, 0)
+#     goal = (0, 19)
+#     pathfinder = AStarPathfinder(grid)
+#     route = pathfinder.find_path(start, goal)
+#     if route:
+#         route = route + [start]
+#         route = route[::-1]
+#         print(route)
+#     else:
+#         print("No se encontró un camino válido.")
 
-# start = (1, 0)
-# goal = (3, 3)
-
-# solver = AStarSearch(grid)
-# path = solver.a_star_search(start, goal)
-# print("Ruta mínima:", path)
