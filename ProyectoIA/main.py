@@ -57,7 +57,7 @@ def cargaCSV(algoritmo):
     print("Ruta del archivo:", ruta_archivo)
 
     laberinto, inicio, meta = cargar_laberinto(ruta_archivo)
-    print("Laberinto Inicial:")
+    print("\nLaberinto Inicial:")
     imprimir_laberinto(laberinto)
     print("\nCoordenadas del punto de inicio:", inicio)
     print("Coordenadas del punto final:", meta)
@@ -78,14 +78,8 @@ def cargaCSV(algoritmo):
             bfs = BFS(laberinto, inicio, meta)
             bfs.resolver_laberinto()
         case "5":
-            pathfinder = AStar(laberinto)
-            route = pathfinder.find_path(inicio, meta)
-            if route:
-                route = route + [inicio]
-                route = route[::-1]
-                print(route)
-            else:
-                print("No se encontró un camino válido.")
+            astar = AStar(laberinto, inicio, meta)
+            astar.resolver_laberinto()
         case _:
             print("Incorrecto!")
 
