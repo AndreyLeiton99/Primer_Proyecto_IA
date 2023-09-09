@@ -92,7 +92,7 @@ class Bellman:
                 vecinos.append((new_x, new_y))
         return vecinos
 
-    def resolver_laberinto(self):
+    def resolver_laberinto(self, algoritmo):
         print("Resolviendo laberinto con Bellman-Ford...")
         inicio_tiempo = time.time()
         mem_usage = memory_profiler.memory_usage()
@@ -102,7 +102,7 @@ class Bellman:
         mem_usage_end = memory_profiler.memory_usage()
         tiempo_total = time.time() - inicio_tiempo
 
-        imprimir_datos(mem_usage, ruta_minima, mem_usage_end, tiempo_total, self.laberinto, self.n, self.m)
+        imprimir_datos(mem_usage, ruta_minima, mem_usage_end, tiempo_total, self.laberinto, self.n, self.m, algoritmo)
 
 
 if __name__ == '__main__':

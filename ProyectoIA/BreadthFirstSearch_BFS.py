@@ -66,7 +66,7 @@ class BFS:
                     # Agregar la celda a la cola con la ruta actual, para seguir buscando desde esa celda en la siguiente iteración
             self.queue.append(((new_x, new_y), nueva_ruta)) 
 
-    def resolver_laberinto(self):
+    def resolver_laberinto(self, algoritmo):
         print("Resolviendo laberinto con BFS...")
         inicio_tiempo = time.time()
         mem_usage = memory_profiler.memory_usage()
@@ -76,7 +76,7 @@ class BFS:
         mem_usage_end = memory_profiler.memory_usage()
         tiempo_total = time.time() - inicio_tiempo
 
-        imprimir_datos(mem_usage, ruta_minima, mem_usage_end, tiempo_total, self.laberinto, self.n, self.m)
+        imprimir_datos(mem_usage, ruta_minima, mem_usage_end, tiempo_total, self.laberinto, self.n, self.m, algoritmo)
 
 
 if __name__ == '__main__':

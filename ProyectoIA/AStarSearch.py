@@ -59,7 +59,7 @@ class AStar:
         return False
     
     # Método para resolver el laberinto con A* search y medir el tiempo de ejecución y consumo de memoria
-    def resolver_laberinto(self):
+    def resolver_laberinto(self, algoritmo):
         print("Resolviendo laberinto con A* search...")
         inicio_tiempo = time.time()
         mem_usage = memory_profiler.memory_usage()
@@ -67,4 +67,4 @@ class AStar:
         mem_usage_end = memory_profiler.memory_usage()
         tiempo_total = time.time() - inicio_tiempo
 
-        imprimir_datos(mem_usage, ruta_minima, mem_usage_end, tiempo_total, self.grid, self.n, self.m)
+        imprimir_datos(mem_usage, ruta_minima, mem_usage_end, tiempo_total, self.grid, self.n, self.m, algoritmo)

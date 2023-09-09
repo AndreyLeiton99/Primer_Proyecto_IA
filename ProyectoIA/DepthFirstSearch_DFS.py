@@ -59,7 +59,7 @@ class DFS:
         self.dfs_laberinto(self.inicio[0], self.inicio[1])
         return self.ruta_minima
 
-    def resolver_laberinto(self):
+    def resolver_laberinto(self, algoritmo):
         print("Resolviendo laberinto con DFS...")
         inicio_tiempo = time.time()
         mem_usage = memory_profiler.memory_usage()
@@ -67,7 +67,7 @@ class DFS:
         mem_usage_end = memory_profiler.memory_usage()
         tiempo_total = time.time() - inicio_tiempo
 
-        imprimir_datos(mem_usage, ruta_minima, mem_usage_end, tiempo_total, self.laberinto, self.n, self.m)
+        imprimir_datos(mem_usage, ruta_minima, mem_usage_end, tiempo_total, self.laberinto, self.n, self.m, algoritmo)
 
 
         

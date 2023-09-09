@@ -67,19 +67,19 @@ def cargaCSV(algoritmo):
     match algoritmo:
         case "1":
             dijkstra = Dijkstra(laberinto, inicio, meta)
-            dijkstra.resolver_laberinto()
+            dijkstra.resolver_laberinto("Dijkstra")
         case "2":
             bellman = Bellman(laberinto, inicio, meta)
-            bellman.resolver_laberinto()
+            bellman.resolver_laberinto("Bellman")
         case "3":
             dfs = DFS(laberinto, inicio, meta)
-            dfs.resolver_laberinto()
+            dfs.resolver_laberinto("Depth First Search")
         case "4":
             bfs = BFS(laberinto, inicio, meta)
-            bfs.resolver_laberinto()
+            bfs.resolver_laberinto("Breadth First Search")
         case "5":
             astar = AStar(laberinto, inicio, meta)
-            astar.resolver_laberinto()
+            astar.resolver_laberinto("A* Search")
         case _:
             print("Incorrecto!")
 
