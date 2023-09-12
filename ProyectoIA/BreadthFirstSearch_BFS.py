@@ -13,10 +13,9 @@ from MetodosDeImpresion import imprimir_datos
 
 
 class BFS:
-    # Movimientos en x, arriba y abajo, no se puede mover en diagonal
-    dx = [-1, 1, 0, 0]
-    # Movimientos en y, izquierda y derecha, no se puede mover en diagonal
-    dy = [0, 0, -1, 1]
+    # Movimientos en x, arriba y abajo, y en y, izquierda y derecha, y diagonales
+    dx = [-1, 1, 0, 0, -1, -1, 1, 1]
+    dy = [0, 0, -1, 1, -1, 1, -1, 1]
 
     def __init__(self, laberinto, inicio, meta):
         # Usar una matriz numpy para acceso más rápido
@@ -41,14 +40,13 @@ class BFS:
                 ruta_minima.insert(0, self.inicio)
                 return ruta_minima
 
-            for i in range(4):
+            for i in range(8):  # Ahora se consideran las 8 direcciones posibles (incluyendo diagonales)
                 # Obtener las nuevas coordenadas de la celda a la que se puede mover
                 new_x = x + self.dx[i]
-                # Obtener las nuevas coordenadas de la celda a la que se puede mover
                 new_y = y + self.dy[i]
 
-                self.actualizar_ruta_minima(ruta_minima, new_x, new_y) # Actualizar la ruta mínima, para cada vecino
-        return None 
+                self.actualizar_ruta_minima(ruta_minima, new_x, new_y)  # Actualizar la ruta mínima, para cada vecino
+        return None
 
     def actualizar_ruta_minima(self, ruta_minima, new_x, new_y): # Verificar que las nuevas coordenadas estén dentro de los límites
         if (
@@ -66,7 +64,7 @@ class BFS:
                     # Agregar la celda a la cola con la ruta actual, para seguir buscando desde esa celda en la siguiente iteración
             self.queue.append(((new_x, new_y), nueva_ruta)) 
 
-    def resolver_laberinto(self, algoritmo):
+    def resolver_laberinto(self, algoritmo, nombre_laberinto):
         print("Resolviendo laberinto con BFS...")
         inicio_tiempo = time.time()
         mem_usage = memory_profiler.memory_usage()
@@ -76,7 +74,7 @@ class BFS:
         mem_usage_end = memory_profiler.memory_usage()
         tiempo_total = time.time() - inicio_tiempo
 
-        imprimir_datos(mem_usage, ruta_minima, mem_usage_end, tiempo_total, self.laberinto, self.n, self.m, algoritmo)
+        imprimir_datos(mem_usage, ruta_minima, mem_usage_end, tiempo_total, self.laberinto, self.n, self.m, algoritmo, nombre_laberinto)
 
 
 if __name__ == '__main__':
@@ -100,4 +98,4 @@ if __name__ == '__main__':
                 meta = (i, j)
 
     bfs_solver = BFS(laberinto_ejemplo, inicio, meta)
-    bfs_solver.resolver_laberinto()
+    bfs_solver.resolver_laberinto("BFS")

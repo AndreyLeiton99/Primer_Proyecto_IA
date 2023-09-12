@@ -1,6 +1,31 @@
-========================================2023-09-09 01:31:37.613436========================================
+========================================2023-09-12 00:25:27.744996========================================
 
-- Algoritmo 'A* Search'
-- Se ejecuta en: 0.25 segundos
+- Algoritmo 'Dijkstra' utilizado con el laberinto del archivo Matriz_2.csv
+- Se ejecuta en: 0.2 segundos
 - Consumo de memoria: 0 MB
 
+- Ruta minima obtenida: [(8, 7), (7, 8), (6, 9), (5, 9), (4, 9), (3, 9), (2, 8)]
+
+========================================2023-09-12 00:26:09.567546========================================
+
+- Algoritmo 'Bellman' utilizado con el laberinto del archivo Matriz_2.csv
+- Se ejecuta en: 0.31 segundos
+- Consumo de memoria: 0 MB
+
+- Ruta minima obtenida: [(8, 7), (7, 8), (6, 8), (5, 7), (4, 6), (3, 7), (2, 8)]
+
+========================================2023-09-12 00:29:30.543420========================================
+
+- Algoritmo 'Breadth First Search' utilizado con el laberinto del archivo Matriz_2.csv
+- Se ejecuta en: 0.22 segundos
+- Consumo de memoria: 0 MB
+
+- Ruta minima obtenida: [(8, 7), (7, 8), (6, 8), (5, 8), (4, 8), (3, 7), (2, 8)]
+
+========================================2023-09-12 00:29:44.754739========================================
+
+- Algoritmo 'Dijkstra' utilizado con el laberinto del archivo Matriz_3.csv
+- Se ejecuta en: 0.22 segundos
+- Consumo de memoria: 0 MB
+
+- Ruta minima obtenida: [(0, 3), (1, 4), (2, 5), (3, 6)]

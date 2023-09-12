@@ -25,6 +25,9 @@ class DFS:
         self.ruta_minima = []
         # Inicializar la matriz de visitados
         self.visitados = [[False] * self.m for _ in range(self.n)]
+        
+        # Definir movimientos diagonales (8 direcciones posibles)
+        self.movimientos = [(1, 0), (-1, 0), (0, 1), (0, -1), (1, 1), (-1, -1), (1, -1), (-1, 1)]
 
     def dfs_laberinto(self, x, y):
 
@@ -44,11 +47,9 @@ class DFS:
                 # Copiar la ruta actual en la ruta mínima
                 self.ruta_minima = self.camino_actual.copy()
 
-        # Llamar recursivamente a la función para cada vecino
-        self.dfs_laberinto(x + 1, y)  # Derecha
-        self.dfs_laberinto(x - 1, y)  # Izquierda
-        self.dfs_laberinto(x, y + 1)  # Arriba
-        self.dfs_laberinto(x, y - 1)  # Abajo
+        # Llamar recursivamente a la función para cada vecino (incluyendo diagonales)
+        for dx, dy in self.movimientos:
+            self.dfs_laberinto(x + dx, y + dy)
 
         # Marcar como no visitado, para poder volver a pasar por la celda en otra ruta
         self.visitados[x][y] = False
@@ -59,7 +60,7 @@ class DFS:
         self.dfs_laberinto(self.inicio[0], self.inicio[1])
         return self.ruta_minima
 
-    def resolver_laberinto(self, algoritmo):
+    def resolver_laberinto(self, algoritmo, nombre_laberinto):
         print("Resolviendo laberinto con DFS...")
         inicio_tiempo = time.time()
         mem_usage = memory_profiler.memory_usage()
@@ -67,7 +68,7 @@ class DFS:
         mem_usage_end = memory_profiler.memory_usage()
         tiempo_total = time.time() - inicio_tiempo
 
-        imprimir_datos(mem_usage, ruta_minima, mem_usage_end, tiempo_total, self.laberinto, self.n, self.m, algoritmo)
+        imprimir_datos(mem_usage, ruta_minima, mem_usage_end, tiempo_total, self.laberinto, self.n, self.m, algoritmo, nombre_laberinto)
 
 
         
@@ -93,6 +94,6 @@ if __name__ == '__main__':
 
  
     DFS = DFS(laberinto_ejemplo, inicio, meta)
-    DFS.resolver_laberinto()
+    DFS.resolver_laberinto("DFS")
 
 

@@ -55,8 +55,12 @@ def cargaCSV(algoritmo):
     carpeta_matrices = os.path.join(directorio_actual, 'MatricesGeneradas')
     ruta_archivo = obtener_ruta_matriz_mas_actualizada(carpeta_matrices)
     print("Ruta del archivo:", ruta_archivo)
+    
+    # Nombre del laberinto utilizado
+    nombre_archivo = os.path.basename(ruta_archivo)
 
     laberinto, inicio, meta = cargar_laberinto(ruta_archivo)
+    print("Nombre del laberinto: " + nombre_archivo + "\n\n")
     print("\nLaberinto Inicial:")
     imprimir_laberinto(laberinto)
     print("\nCoordenadas del punto de inicio:", inicio)
@@ -67,19 +71,19 @@ def cargaCSV(algoritmo):
     match algoritmo:
         case "1":
             dijkstra = Dijkstra(laberinto, inicio, meta)
-            dijkstra.resolver_laberinto("Dijkstra")
+            dijkstra.resolver_laberinto("Dijkstra", nombre_archivo)
         case "2":
             bellman = Bellman(laberinto, inicio, meta)
-            bellman.resolver_laberinto("Bellman")
+            bellman.resolver_laberinto("Bellman", nombre_archivo)
         case "3":
             dfs = DFS(laberinto, inicio, meta)
-            dfs.resolver_laberinto("Depth First Search")
+            dfs.resolver_laberinto("Depth First Search", nombre_archivo)
         case "4":
             bfs = BFS(laberinto, inicio, meta)
-            bfs.resolver_laberinto("Breadth First Search")
+            bfs.resolver_laberinto("Breadth First Search", nombre_archivo)
         case "5":
             astar = AStar(laberinto, inicio, meta)
-            astar.resolver_laberinto("A* Search")
+            astar.resolver_laberinto("A* Search", nombre_archivo)
         case _:
             print("Incorrecto!")
 

@@ -14,10 +14,9 @@ from MetodosDeImpresion import imprimir_datos
 
 class Bellman:
 
-    # Movimientos en x, arriba y abajo, no se puede mover en diagonal
-    dx = [-1, 1, 0, 0]
-    # Movimientos en y, izquierda y derecha, no se puede mover en diagonal
-    dy = [0, 0, -1, 1]
+     # Movimientos en x, arriba y abajo, y en y, izquierda y derecha
+    dx = [-1, 1, 0, 0, -1, -1, 1, 1]
+    dy = [0, 0, -1, 1, -1, 1, -1, 1]
 
     def __init__(self, laberinto, inicio, meta):
         # Convertir la matriz a un arreglo de numpy para mayor eficiencia
@@ -85,14 +84,14 @@ class Bellman:
 
     def obtener_vecinos(self, x, y):
         vecinos = []
-        for i in range(4):
+        for i in range(8):  # Ahora se consideran las 8 direcciones posibles (incluyendo diagonales)
             new_x = x + self.dx[i]
             new_y = y + self.dy[i]
             if 0 <= new_x < self.n and 0 <= new_y < self.m:
                 vecinos.append((new_x, new_y))
         return vecinos
 
-    def resolver_laberinto(self, algoritmo):
+    def resolver_laberinto(self, algoritmo, nombre_laberinto):
         print("Resolviendo laberinto con Bellman-Ford...")
         inicio_tiempo = time.time()
         mem_usage = memory_profiler.memory_usage()
@@ -102,7 +101,7 @@ class Bellman:
         mem_usage_end = memory_profiler.memory_usage()
         tiempo_total = time.time() - inicio_tiempo
 
-        imprimir_datos(mem_usage, ruta_minima, mem_usage_end, tiempo_total, self.laberinto, self.n, self.m, algoritmo)
+        imprimir_datos(mem_usage, ruta_minima, mem_usage_end, tiempo_total, self.laberinto, self.n, self.m, algoritmo, nombre_laberinto)
 
 
 if __name__ == '__main__':
@@ -126,4 +125,4 @@ if __name__ == '__main__':
                 meta = (i, j)
 
     bellman = Bellman(laberinto_ejemplo, inicio, meta)
-    bellman.resolver_laberinto()
+    bellman.resolver_laberinto("Bellman")

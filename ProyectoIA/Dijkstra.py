@@ -41,22 +41,21 @@ class Dijkstra:
         return ruta_minima
 
     def obtener_vecinos(self, distancia_actual, x, y):
-        for dx, dy in [(1, 0), (-1, 0), (0, 1), (0, -1)]:
+        for dx, dy in [(1, 0), (-1, 0), (0, 1), (0, -1), (1, 1), (-1, -1), (1, -1), (-1, 1)]:
             nx, ny = x + dx, y + dy  # Obtener las coordenadas del vecino
 
-                # Si el vecino está dentro del laberinto y no es un obstáculo
+            # Si el vecino está dentro del laberinto y no es un obstáculo
             if 0 <= nx < self.n and 0 <= ny < self.m and self.laberinto[nx][ny] == 0:
-                    # La distancia al vecino es la distancia de la celda actual + 1
+                # La distancia al vecino es la distancia de la celda actual + 1
                 nueva_distancia = distancia_actual + 1
 
-                    # Si la nueva distancia es menor a la distancia actual del vecino
+                # Si la nueva distancia es menor a la distancia actual del vecino
                 if nueva_distancia < self.distancias[nx][ny]:
-                        # el vecino seria parte de la ruta minima, por lo que se agrega a la cola de prioridad con su nueva distancia
-                        # Actualizar la distancia del vecino a la nueva distancia
+                    # Actualizar la distancia del vecino a la nueva distancia
                     self.distancias[nx][ny] = nueva_distancia
-                        # Agregar el vecino a la cola de prioridad
-                    heapq.heappush(self.cola_prioridad,
-                                       (nueva_distancia, (nx, ny)))
+                    # Agregar el vecino a la cola de prioridad
+                    heapq.heappush(self.cola_prioridad, (nueva_distancia, (nx, ny)))
+
 
     def reconstruir_ruta(self):
         ruta = []
@@ -69,7 +68,7 @@ class Dijkstra:
             next_x, next_y = x, y  # Coordenadas del siguiente nodo en la ruta mínima
 
             # Iterar sobre los vecinos de la celda actual
-            for dx, dy in [(1, 0), (-1, 0), (0, 1), (0, -1)]:
+            for dx, dy in [(1, 0), (-1, 0), (0, 1), (0, -1), (1, 1), (-1, -1), (1, -1), (-1, 1)]:
                 nx, ny = x + dx, y + dy  # Obtener las coordenadas del vecino
 
                 if 0 <= nx < self.n and 0 <= ny < self.m:  # Si el vecino está dentro del laberinto
@@ -88,7 +87,7 @@ class Dijkstra:
 
 
     # Método para resolver el laberinto con Dijkstra y medir el tiempo de ejecución y consumo de memoria
-    def resolver_laberinto(self, algoritmo):
+    def resolver_laberinto(self, algoritmo, nombre_laberinto):
         print("Resolviendo laberinto con Dijkstra...")
         inicio_tiempo = time.time()
         mem_usage = memory_profiler.memory_usage()
@@ -96,18 +95,19 @@ class Dijkstra:
         mem_usage_end = memory_profiler.memory_usage()
         tiempo_total = time.time() - inicio_tiempo
 
-        imprimir_datos(mem_usage, ruta_minima, mem_usage_end, tiempo_total, self.laberinto, self.n, self.m, algoritmo)
+        imprimir_datos(mem_usage, ruta_minima, mem_usage_end, tiempo_total, self.laberinto, self.n, self.m, algoritmo, nombre_laberinto)
 
     
 if __name__ == '__main__':
     # Definir la matriz de ejemplo y coordenadas de inicio y meta
     laberinto_ejemplo = [
     [2, 0, 0, 0, 0],
-    [1, 1, 0, 1, 0],
-    [0, 0, 0, 0, 0],
+    [1, 0, 1, 1, 0],
+    [0, 1, 0, 0, 0],
     [0, 1, 1, 1, 0],
     [0, 0, 0, 0, 3]
-    ]
+]
+
 
     inicio = None
     meta = None
@@ -120,4 +120,4 @@ if __name__ == '__main__':
                 meta = (i, j)
 
     dijkstra = Dijkstra(laberinto_ejemplo, inicio, meta)
-    dijkstra.resolver_laberinto()
+    dijkstra.resolver_laberinto("Dijkstra")
