@@ -6,6 +6,7 @@ from BreadthFirstSearch_BFS import BFS
 from DepthFirstSearch_DFS import DFS
 from AStarSearch import AStar
 import os
+import time
 # from memory_profiler import profile
 
 
@@ -14,7 +15,7 @@ def menu():
 
     opc = input("Por favor, digite la opcion que desea escoger: "
                 "\n0- Generar otra matriz \n1- Dijkstra \n2- Bellman \n3- Depht First Search (DFS) "
-                "\n4- Breadth-First Search (BFS) \n5- A* Search \n\nOpcion: ")
+                "\n4- Breadth-First Search (BFS) \n5- A* Search \n6- Salir\n\nOpcion: ")
 
     match opc:
         case "0":
@@ -44,9 +45,12 @@ def menu():
             print("Elegiste la opcion 5, A * Search\n")
             cargaCSV("5")
 
-        case _:
-            print("Saliendo del programa \n")
+        case "6":
+            print("Saliendo del programa... \n")
             exit()
+        case _:
+            print("\n¡Opcion invalida!")
+            time.sleep(2)
 
 
 def cargaCSV(algoritmo):
